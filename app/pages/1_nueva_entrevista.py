@@ -955,7 +955,6 @@ with st.container():
     st.page_link(
         "pages/terminos_condiciones.py",
         label="Ver aviso de privacidad y términos",
-        icon="📄",
     )
     acepto_aviso_privacidad = st.checkbox(
         "He leído y acepto el aviso de privacidad*",
