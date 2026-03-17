@@ -10,6 +10,7 @@ from datetime import datetime
 from io import BytesIO
 from pathlib import Path
 import sys
+import runpy
 
 import streamlit as st
 from PIL import Image
@@ -28,6 +29,11 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
+
+runpy.run_path(
+    str(Path(__file__).resolve().parent.parent / "app" / "pages" / "3_pendientes_sincronizar.py"),
+    run_name="__main__",
+)
 
 def render_header_sesion() -> None:
     """Header local para evitar dependencias de import en esta pagina."""
