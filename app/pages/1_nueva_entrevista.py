@@ -5,6 +5,7 @@ from pathlib import Path
 from io import BytesIO
 import re
 import sys
+import runpy
 
 from PIL import Image
 
@@ -25,6 +26,10 @@ from utils.sheets_handler import (
     subir_entrevista_sheets,
 )
 
+runpy.run_path(
+    str(Path(__file__).resolve().parent.parent / "app" / "pages" / "1_nueva_entrevista.py"),
+    run_name="__main__",
+)
 
 MESES = ["ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"]
 
