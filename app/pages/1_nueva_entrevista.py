@@ -951,11 +951,24 @@ with st.container():
         mostrar_galeria_fotos()
 
     st.markdown("---")
+    st.markdown(
+        "He leído y acepto el "
+        "[aviso de privacidad](pages/terminos_condiciones.py)."
+    )
+    acepto_aviso_privacidad = st.checkbox(
+        "He leído y acepto el aviso de privacidad*",
+        key="acepto_aviso_privacidad_nueva_entrevista",
+    )
+
     submitted = st.button(
         "Registrar Entrevista",
         use_container_width=True,
         type="primary",
-        disabled=not es_valido or primera_vez_opcion == "Seleccionar...",
+        disabled=(
+            not es_valido
+            or primera_vez_opcion == "Seleccionar..."
+            or not acepto_aviso_privacidad
+        ),
     )
 
     if submitted:
@@ -965,6 +978,10 @@ with st.container():
 
         if primera_vez_opcion == "Seleccionar...":
             st.error("Debes responder si es la primera vez que realizas esta entrevista")
+            st.stop()
+
+        if not acepto_aviso_privacidad:
+            st.error("Debes aceptar el aviso de privacidad para registrar la entrevista")
             st.stop()
 
         if not apellido or apellido.strip() == "":

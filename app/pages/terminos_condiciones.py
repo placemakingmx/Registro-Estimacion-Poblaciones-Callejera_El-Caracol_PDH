@@ -1,52 +1,67 @@
-# TÉRMINOS Y CONDICIONES DE USO DE DATOS
+import streamlit as st
 
----
+st.set_page_config(
+    page_title="Terminos y Condiciones",
+    page_icon="",
+    layout="centered",
+    initial_sidebar_state="collapsed",
+)
 
-## **Información y Privacidad del Estudio**
+st.title("Terminos y Condiciones de Uso de Datos")
 
-Este registro forma parte de un **estudio académico** realizado por el **Programa de Derechos Humanos de la Universidad Iberoamericana** en colaboración con **El Caracol A.C.**, con el objetivo de documentar y visibilizar la situación de las personas en calle en la Ciudad de México.
+st.markdown(
+    """
+## Informacion y Privacidad del Estudio
 
-### **Uso de tus datos personales**
+Este registro forma parte de un estudio academico realizado por el Programa de Derechos
+Humanos de la Universidad Iberoamericana en colaboracion con El Caracol A.C., con el
+objetivo de documentar y visibilizar la situacion de las personas en calle en la Ciudad de Mexico.
 
-- **Confidencialidad:** Todos los datos que proporciones (nombre, edad, fecha de nacimiento, etc.) serán tratados de manera **estrictamente confidencial**.
+### Uso de tus datos personales
 
-- **No divulgación:** Tu información personal **NO será compartida, publicada ni divulgada** fuera del equipo de investigación.
+- Confidencialidad: Todos los datos que proporciones (nombre, edad, fecha de nacimiento, etc.)
+  seran tratados de manera estrictamente confidencial.
+- No divulgacion: Tu informacion personal NO sera compartida, publicada ni divulgada fuera
+  del equipo de investigacion.
+- Acceso restringido: Solo tendran acceso a tus datos las personas autorizadas del PDH
+  Iberoamericana y El Caracol A.C. que participan en este estudio.
 
-- **Acceso restringido:** Solo tendrán acceso a tus datos las personas autorizadas del **PDH Iberoamericana** y **El Caracol A.C.** que participan en este estudio.
+### Uso de fotografias
 
-### **Uso de fotografías**
+- Proposito: Las fotografias se toman unicamente como evidencia documental de las entrevistas
+  realizadas en campo.
+- Almacenamiento seguro: Las imagenes se guardan en un sistema protegido y NO seran
+  publicadas, compartidas ni utilizadas para ningun otro fin fuera del estudio.
+- Privacidad: Tu rostro e identidad estaran protegidos. Las fotos NO se entregaran a ninguna
+  institucion gubernamental, medios de comunicacion ni terceros ajenos al estudio.
 
-- **Propósito:** Las fotografías se toman únicamente como **evidencia documental** de las entrevistas realizadas en campo.
+### Generacion de ID unico
 
-- **Almacenamiento seguro:** Las imágenes se guardan en un sistema protegido y **NO serán publicadas, compartidas ni utilizadas** para ningún otro fin fuera del estudio.
+Se te asignara un codigo de identificacion unico (ID) generado con informacion basica
+(genero, iniciales, fecha de nacimiento) para proteger tu identidad al analizar los datos.
 
-- **Privacidad:** Tu rostro y tu identidad estarán protegidos. Las fotos **NO se entregarán** a ninguna institución gubernamental, medios de comunicación ni terceros ajenos al estudio.
+### Tu consentimiento
 
-### **Generación de ID único**
+Al aceptar participar en esta entrevista, otorgas tu consentimiento libre e informado para:
 
-Se te asignará un **código de identificación único** (ID) generado con información básica (género, iniciales, fecha de nacimiento) para proteger tu identidad al momento de analizar los datos del estudio.
+- El registro de tus datos personales con fines academicos.
+- La toma de fotografias como evidencia del trabajo de campo.
+- El uso confidencial de esta informacion por parte del equipo de investigacion.
 
-### **Tu consentimiento**
-
-Al aceptar participar en esta entrevista, **otorgas tu consentimiento libre e informado** para:
-- El registro de tus datos personales con fines académicos
-- La toma de fotografías como evidencia del trabajo de campo
-- El uso confidencial de esta información por parte del equipo de investigación
-
-### **Tus derechos**
+### Tus derechos
 
 En cualquier momento puedes:
-- **Solicitar información** sobre los datos que tenemos de ti
-- **Solicitar corrección** de tus datos si hay errores
-- **Negarte a participar** sin ninguna consecuencia
 
----
+- Solicitar informacion sobre los datos que tenemos de ti.
+- Solicitar correccion de tus datos si hay errores.
+- Negarte a participar sin ninguna consecuencia.
 
-**Tu participación es voluntaria y tu privacidad está garantizada.**
+Tu participacion es voluntaria y tu privacidad esta garantizada.
 
-Para cualquier duda, contacta a **El Caracol A.C.**  
-📍 Rafael Heliodoro Valle 333, Col. Lorenzo Boturini, Alcaldía Venustiano Carranza, CDMX
+Para cualquier duda, contacta a El Caracol A.C.
 
----
+Rafael Heliodoro Valle 333, Col. Lorenzo Boturini, Alcaldia Venustiano Carranza, CDMX
 
-*Última actualización: Marzo 2025*
+Ultima actualizacion: Marzo 2025
+"""
+)
