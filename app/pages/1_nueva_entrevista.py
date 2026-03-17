@@ -952,7 +952,7 @@ with st.container():
 
     st.markdown("---")
     st.page_link(
-        "pages/terminos_condiciones.py",
+        "pages/Aviso_de_privacidad.py",
         label="Ver aviso de privacidad y términos",
     )
     acepto_aviso_privacidad = st.checkbox(

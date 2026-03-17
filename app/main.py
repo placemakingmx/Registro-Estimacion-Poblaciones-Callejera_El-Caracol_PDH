@@ -638,6 +638,7 @@ def contenido_principal() -> None:
         if st.button("Nueva Entrevista"):
             _switch_page_robusto(
                 [
+                    "pages/Nuevo_Registro.py",
                     "pages/1_nueva_entrevista.py",
                     "app/pages/1_nueva_entrevista.py",
                     "1_nueva_entrevista.py",
@@ -647,6 +648,7 @@ def contenido_principal() -> None:
         if st.button("Buscar / Editar"):
             _switch_page_robusto(
                 [
+                    "pages/Editar_Registro.py",
                     "pages/2_buscar_editar.py",
                     "app/pages/2_buscar_editar.py",
                     "2_buscar_editar.py",
@@ -658,6 +660,7 @@ def contenido_principal() -> None:
         if st.button("Pendientes"):
             _switch_page_robusto(
                 [
+                    "pages/Registros_Offline.py",
                     "pages/3_pendientes_sincronizar.py",
                     "app/pages/3_pendientes_sincronizar.py",
                     "3_pendientes_sincronizar.py",
@@ -667,6 +670,7 @@ def contenido_principal() -> None:
         if st.button("Dashboard Admin"):
             _switch_page_robusto(
                 [
+                    "pages/Admin.py",
                     "pages/4_dashboard_admin.py",
                     "app/pages/4_dashboard_admin.py",
                     "4_dashboard_admin.py",
