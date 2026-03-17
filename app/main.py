@@ -7,6 +7,7 @@ from typing import Optional
 
 import streamlit as st
 import streamlit.components.v1 as components
+from streamlit.errors import StreamlitAPIException
 
 from utils.id_generator import (
     generar_id_entrevistador,
@@ -350,6 +351,20 @@ _NUEVO_ENTREVISTADOR = "+ Registrar nuevo/a entrevistador/a"
 _NUEVA_RUTA = "+ Registrar nueva ruta"
 
 
+def _switch_page_robusto(page_candidates: list[str], nombre: str) -> None:
+    """Intenta navegar a una pagina probando distintas rutas candidatas."""
+    for page in page_candidates:
+        try:
+            st.switch_page(page)
+            return
+        except StreamlitAPIException:
+            continue
+
+    st.error(
+        f"No se pudo abrir '{nombre}'. Verifica que la pagina exista en la carpeta pages/ del entrypoint."
+    )
+
+
 def pagina_login() -> None:
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
@@ -615,15 +630,43 @@ def contenido_principal() -> None:
     col1, col2 = st.columns(2)
     with col1:
         if st.button("Nueva Entrevista"):
-            st.switch_page("pages/1_nueva_entrevista.py")
+            _switch_page_robusto(
+                [
+                    "pages/1_nueva_entrevista.py",
+                    "app/pages/1_nueva_entrevista.py",
+                    "1_nueva_entrevista.py",
+                ],
+                "Nueva Entrevista",
+            )
         if st.button("Buscar / Editar"):
-            st.switch_page("pages/2_buscar_editar.py")
+            _switch_page_robusto(
+                [
+                    "pages/2_buscar_editar.py",
+                    "app/pages/2_buscar_editar.py",
+                    "2_buscar_editar.py",
+                ],
+                "Buscar / Editar",
+            )
 
     with col2:
         if st.button("Pendientes"):
-            st.switch_page("pages/3_pendientes_sincronizar.py")
+            _switch_page_robusto(
+                [
+                    "pages/3_pendientes_sincronizar.py",
+                    "app/pages/3_pendientes_sincronizar.py",
+                    "3_pendientes_sincronizar.py",
+                ],
+                "Pendientes",
+            )
         if st.button("Dashboard Admin"):
-            st.switch_page("pages/4_dashboard_admin.py")
+            _switch_page_robusto(
+                [
+                    "pages/4_dashboard_admin.py",
+                    "app/pages/4_dashboard_admin.py",
+                    "4_dashboard_admin.py",
+                ],
+                "Dashboard Admin",
+            )
 
     st.divider()
     if st.button("Cerrar sesión", type="secondary"):
