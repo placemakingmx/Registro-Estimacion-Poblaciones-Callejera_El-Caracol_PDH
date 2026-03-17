@@ -1,0 +1,7 @@
+{
+  "python.defaultInterpreterPath": "/workspaces/Registro-Estimacion-Poblaciones-Callejera_El-Caracol_PDH/.venv/bin/python",
+  "python.analysis.extraPaths": [
+    "/workspaces/Registro-Estimacion-Poblaciones-Callejera_El-Caracol_PDH",
+    "/workspaces/Registro-Estimacion-Poblaciones-Callejera_El-Caracol_PDH/.venv/lib/python3.11/site-packages"
+  ]
+}

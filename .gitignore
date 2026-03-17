@@ -1,4 +1,7 @@
 .streamlit/secrets.toml
+app/secrets.toml
+app/.streamlit/secrets.toml
+app/client_secret.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
