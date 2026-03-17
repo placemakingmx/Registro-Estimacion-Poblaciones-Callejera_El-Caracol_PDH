@@ -1,11 +1,15 @@
 import sys
 from pathlib import Path
 
-# Ensure the `app/` package root is importable when Streamlit Cloud runs from repo root.
-APP_DIR = Path(__file__).resolve().parent / "app"
-if str(APP_DIR) not in sys.path:
-    sys.path.insert(0, str(APP_DIR))
+ROOT_DIR = Path(__file__).resolve().parent
+APP_DIR = ROOT_DIR / "app"
 
-# Execute the Streamlit app entrypoint.
-# Importing runs the top-level Streamlit code in app/main.py.
-import main  # noqa: F401
+for p in (str(ROOT_DIR), str(APP_DIR)):
+    if p not in sys.path:
+        sys.path.insert(0, p)
+
+try:
+    import app.main  # noqa: F401
+except Exception as exc:
+    print("Failed to import app.main during startup:", repr(exc))
+    raise
