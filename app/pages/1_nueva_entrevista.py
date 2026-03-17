@@ -1,3 +1,4 @@
+```python name=app/pages/1_nueva_entrevista.py
 import base64
 from datetime import date, datetime
 from pathlib import Path
@@ -384,8 +385,10 @@ def solicitar_permiso_gps() -> bool:
 
         st.stop()
 
-    st.caption("Permite acceso a ubicación en el navegador para continuar con GPS activo. Haz click en 'Permitir siempre' para compartirlo." \
-    "Realiza lo mismo con el acceso a la cámara y archivos del dispositivo")
+    st.caption(
+        "Permite acceso a ubicación en el navegador para continuar con GPS activo. Haz click en 'Permitir siempre' para compartirlo."
+        "Realiza lo mismo con el acceso a la cámara y archivos del dispositivo"
+    )
     result = _capturar_ubicacion_nativa()
     if result and result.get("status") == "ok" and _guardar_gps_desde_location(result):
         st.session_state.gps_permiso_solicitado = True
@@ -409,7 +412,7 @@ def solicitar_permiso_gps() -> bool:
         st.rerun()
 
     if result and result.get("status") not in ("ok", "pending", None):
-        st.warning(f"No se pudo obtener ubicación todavía.")
+        st.warning("No se pudo obtener ubicación todavía.")
 
     st.warning("Si no deseas compartir ubicación, selecciona continuar sin GPS.")
     if st.button("Guardar sin GPS", use_container_width=True, key="gps_denegado"):
@@ -564,13 +567,15 @@ def agregar_foto(foto_file, origen: str = "camara") -> bool:
     if not contenido:
         return False
     st.session_state["contador_fotos"] += 1
-    st.session_state["fotos_capturadas"].append({
-        "id": st.session_state["contador_fotos"],
-        "bytes": contenido,
-        "mime_type": getattr(foto_file, "type", None) or "image/jpeg",
-        "origen": origen,
-        "nombre": getattr(foto_file, "name", f"foto_{st.session_state['contador_fotos']}.jpg"),
-    })
+    st.session_state["fotos_capturadas"].append(
+        {
+            "id": st.session_state["contador_fotos"],
+            "bytes": contenido,
+            "mime_type": getattr(foto_file, "type", None) or "image/jpeg",
+            "origen": origen,
+            "nombre": getattr(foto_file, "name", f"foto_{st.session_state['contador_fotos']}.jpg"),
+        }
+    )
     return True
 
 
@@ -765,9 +770,7 @@ es_valido = anos_calle >= 1
 if es_valido:
     st.success("Validación aceptada")
 else:
-    st.error(
-        "Validación rechazada: debe tener al menos 1 año en situación de calle"
-    )
+    st.error("Validación rechazada: debe tener al menos 1 año en situación de calle")
 
 st.markdown("---")
 
@@ -862,9 +865,18 @@ with st.container():
                 )
 
             meses_dict = {
-                "ENE": 1, "FEB": 2, "MAR": 3, "ABR": 4,
-                "MAY": 5, "JUN": 6, "JUL": 7, "AGO": 8,
-                "SEP": 9, "OCT": 10, "NOV": 11, "DIC": 12,
+                "ENE": 1,
+                "FEB": 2,
+                "MAR": 3,
+                "ABR": 4,
+                "MAY": 5,
+                "JUN": 6,
+                "JUL": 7,
+                "AGO": 8,
+                "SEP": 9,
+                "OCT": 10,
+                "NOV": 11,
+                "DIC": 12,
             }
             try:
                 fecha_nacimiento = date(int(anio_nac), meses_dict[mes_nac], int(dia_nac))
@@ -1111,3 +1123,4 @@ with st.container():
             mostrar_id_persona(id_persona)
             st.info(f"ID Evento: {id_evento}")
             limpiar_fotos()
+```
