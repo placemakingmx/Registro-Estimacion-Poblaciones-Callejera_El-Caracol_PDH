@@ -28,6 +28,15 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
+
+def _normalizar_link_mapa(url: str | None) -> str | None:
+    raw = str(url or "").strip()
+    if not raw:
+        return None
+    if raw.startswith("http://") or raw.startswith("https://"):
+        return raw
+    return f"https://{raw}"
+
 def render_header_sesion() -> None:
     """Header local para evitar dependencias de import en esta pagina."""
     if st.session_state.get("logged_in"):
@@ -42,9 +51,9 @@ def render_header_sesion() -> None:
             unsafe_allow_html=True,
         )
 
-        ruta_link_maps = st.session_state.get("ruta_link_maps")
+        ruta_link_maps = _normalizar_link_mapa(st.session_state.get("ruta_link"))
         if ruta_link_maps:
-            st.markdown(f"[Ver Ruta en Google Maps]({ruta_link_maps})")
+            st.link_button("Ver Ruta en Google Maps", ruta_link_maps, use_container_width=True)
 
         st.markdown("---")
 

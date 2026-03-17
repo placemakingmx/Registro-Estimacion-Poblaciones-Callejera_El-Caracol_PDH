@@ -74,19 +74,15 @@ def _header_sesion_local() -> None:
         unsafe_allow_html=True,
     )
 
-    if ruta_link:
+    map_url = _normalizar_link_mapa(ruta_link)
+    if map_url:
         st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
-        if st.button(
+        st.link_button(
             "Abrir mapa en Google Maps",
+            map_url,
             use_container_width=True,
             type="primary",
-            key="btn_mapa_nueva",
-        ):
-            safe_url = str(ruta_link).replace("'", "%27")
-            components.html(
-                f"<script>window.open('{safe_url}', '_blank');</script>",
-                height=0,
-            )
+        )
         st.markdown("<div style='height: 6px;'></div>", unsafe_allow_html=True)
 
     st.markdown("---")
@@ -113,6 +109,15 @@ def _convertir_texto_a_anos(texto: str) -> float | None:
     if "dia" in t:
         return valor / 365.0
     return valor
+
+
+def _normalizar_link_mapa(url: str | None) -> str | None:
+    raw = str(url or "").strip()
+    if not raw:
+        return None
+    if raw.startswith("http://") or raw.startswith("https://"):
+        return raw
+    return f"https://{raw}"
 
 
 def _parse_int_optional(raw: str) -> int | None:

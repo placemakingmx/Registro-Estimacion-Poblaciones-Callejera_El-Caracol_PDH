@@ -365,6 +365,16 @@ def _switch_page_robusto(page_candidates: list[str], nombre: str) -> None:
     )
 
 
+def _normalizar_link_mapa(url: str | None) -> str | None:
+    """Normaliza URL de mapas para que sea clickeable en Streamlit Cloud."""
+    raw = str(url or "").strip()
+    if not raw:
+        return None
+    if raw.startswith("http://") or raw.startswith("https://"):
+        return raw
+    return f"https://{raw}"
+
+
 def pagina_login() -> None:
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
@@ -605,19 +615,15 @@ def header_sesion() -> None:
             unsafe_allow_html=True,
         )
 
-        if st.session_state.ruta_link:
+        map_url = _normalizar_link_mapa(st.session_state.ruta_link)
+        if map_url:
             st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
-            if st.button(
+            st.link_button(
                 "Abrir mapa en Google Maps",
+                map_url,
                 use_container_width=True,
                 type="primary",
-                key="btn_mapa_inicio",
-            ):
-                safe_url = str(st.session_state.ruta_link).replace("'", "%27")
-                components.html(
-                    f"<script>window.open('{safe_url}', '_blank');</script>",
-                    height=0,
-                )
+            )
             st.markdown("<div style='height: 6px;'></div>", unsafe_allow_html=True)
 
         st.markdown("---")
