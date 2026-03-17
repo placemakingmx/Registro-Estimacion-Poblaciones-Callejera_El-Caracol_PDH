@@ -951,13 +951,12 @@ with st.container():
         mostrar_galeria_fotos()
 
     st.markdown("---")
-    st.markdown("He leído y acepto el aviso de privacidad:")
     st.page_link(
         "pages/terminos_condiciones.py",
         label="Ver aviso de privacidad y términos",
     )
     acepto_aviso_privacidad = st.checkbox(
-        "He leído y acepto el aviso de privacidad*",
+        "*He leído y acepto el aviso de privacidad*",
         key="acepto_aviso_privacidad_nueva_entrevista",
     )
 
