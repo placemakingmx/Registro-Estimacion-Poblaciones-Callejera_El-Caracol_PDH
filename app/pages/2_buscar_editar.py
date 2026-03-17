@@ -1,7 +1,6 @@
 import streamlit as st
 import sys
 from pathlib import Path
-import runpy
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
@@ -13,11 +12,6 @@ st.set_page_config(
     page_icon="",
     layout="wide",
     initial_sidebar_state="collapsed",
-)
-
-runpy.run_path(
-    str(Path(__file__).resolve().parent.parent / "app" / "pages" / "2_buscar_editar.py"),
-    run_name="__main__",
 )
 
 # Verificar login

@@ -1,11 +1,9 @@
-```python name=app/pages/1_nueva_entrevista.py
 import base64
 from datetime import date, datetime
 from pathlib import Path
 from io import BytesIO
 import re
 import sys
-import runpy
 
 from PIL import Image
 
@@ -24,11 +22,6 @@ from utils.sheets_handler import (
     obtener_datos_entrevistador_por_id,
     obtener_entrevistas_existentes,
     subir_entrevista_sheets,
-)
-
-runpy.run_path(
-    str(Path(__file__).resolve().parent.parent / "app" / "pages" / "1_nueva_entrevista.py"),
-    run_name="__main__",
 )
 
 MESES = ["ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"]
@@ -1128,4 +1121,3 @@ with st.container():
             mostrar_id_persona(id_persona)
             st.info(f"ID Evento: {id_evento}")
             limpiar_fotos()
-```
