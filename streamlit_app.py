@@ -1,5 +1,10 @@
-import streamlit as st
+from pathlib import Path
+import runpy
+import sys
 
-st.set_page_config(page_title="Boot test")
-st.title("BOOT OK")
-st.write("Si ves esto, Streamlit sí está ejecutando streamlit_app.py.")
+APP_DIR = Path(__file__).resolve().parent / "app"
+
+if str(APP_DIR) not in sys.path:
+    sys.path.insert(0, str(APP_DIR))
+
+runpy.run_path(str(APP_DIR / "main.py"), run_name="__main__")
