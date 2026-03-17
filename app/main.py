@@ -397,10 +397,11 @@ def pagina_login() -> None:
     # ── Entrevistador ────────────────────────────────────────────────────────
     st.markdown("### Entrevistador/a")
 
-    nombres_entrevistadores = [f"{e['nombre']} ({e['id']})" for e in entrevistadores] + [_NUEVO_ENTREVISTADOR]
-    entrevistador_sel_nombre = st.selectbox(
+    opciones_entrevistador = list(range(len(entrevistadores))) + [_NUEVO_ENTREVISTADOR]
+    entrevistador_sel = st.selectbox(
         "Selecciona tu nombre",
-        options=nombres_entrevistadores,
+        options=opciones_entrevistador,
+        format_func=lambda opt: entrevistadores[opt]["nombre"] if isinstance(opt, int) else opt,
         key="login_sel_entrevistador",
     )
 
@@ -414,7 +415,7 @@ def pagina_login() -> None:
     selected_entrevistador_fecha_nac: Optional[str] = None
     selected_user_role: str = "capturista"
 
-    if entrevistador_sel_nombre == _NUEVO_ENTREVISTADOR:
+    if entrevistador_sel == _NUEVO_ENTREVISTADOR:
         st.info("Completa tu perfil para generar tu ID de entrevistador")
 
         genero_nuevo = st.selectbox(
@@ -469,10 +470,7 @@ def pagina_login() -> None:
                 f"{selected_entrevistador_dia_nac:02d}/{selected_entrevistador_mes_nac}/{selected_entrevistador_anio_nac}"
             )
     else:
-        match = next(
-            (e for e in entrevistadores if f"{e['nombre']} ({e['id']})" == entrevistador_sel_nombre),
-            None,
-        )
+        match = entrevistadores[entrevistador_sel] if isinstance(entrevistador_sel, int) else None
         if match:
             selected_entrevistador_id = match["id"]
             selected_entrevistador_nombre = match["nombre"]
@@ -539,7 +537,7 @@ def pagina_login() -> None:
             st.error("El nombre de la ruta es obligatorio.")
             return
 
-        if entrevistador_sel_nombre == _NUEVO_ENTREVISTADOR:
+        if entrevistador_sel == _NUEVO_ENTREVISTADOR:
             ids_existentes = {e["id"] for e in entrevistadores}
             if selected_entrevistador_id in ids_existentes:
                 st.error(f"El ID {selected_entrevistador_id} ya existe en el sistema")
