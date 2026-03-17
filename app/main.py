@@ -155,9 +155,71 @@ def cargar_entrevistadores_existentes() -> list[dict]:
             "mes_nacimiento": info.get("mes_nacimiento", ""),
             "anio_nacimiento": info.get("anio_nacimiento", ""),
             "fecha_nacimiento": info.get("fecha_nacimiento", ""),
+            "rol": "capturista",
         }
         for eid, info in entrevistadores_dict.items()
     ]
+
+    if entrevistadores:
+        entrevistadores.sort(key=lambda x: ((x["nombre"] or "").lower(), x["id"]))
+        return entrevistadores
+
+    # Fallback: si no hay entrevistas previas, intenta cargar usuarios desde hojas de catalogo.
+    if not _secrets_disponibles():
+        return []
+
+    def _first_non_empty(row: dict, keys: list[str]) -> str:
+        for key in keys:
+            value = str(row.get(key, "") or "").strip()
+            if value:
+                return value
+        return ""
+
+    posibles_hojas = [
+        "Entrevistadores",
+        "Usuarios",
+        "Admins",
+        "Administradores",
+    ]
+
+    usuarios_por_id: dict[str, dict] = {}
+    sh = _open_spreadsheet()
+    if sh is None:
+        return []
+
+    for hoja in posibles_hojas:
+        try:
+            records = sh.worksheet(hoja).get_all_records()
+        except Exception:
+            continue
+
+        for row in records:
+            user_id = _first_non_empty(row, ["ID_Entrevistador", "ID", "id", "Id"])
+            if not user_id:
+                continue
+
+            nombre = _first_non_empty(row, ["Nombre_Entrevistador", "Nombre", "nombre"])
+            apellido = _first_non_empty(row, ["Apellido_Entrevistador", "Apellido", "apellido"])
+            genero = _first_non_empty(row, ["Genero_Entrevistador", "Genero", "genero"])
+            rol = _first_non_empty(row, ["Rol", "rol", "Perfil", "perfil", "Tipo", "tipo"]).lower()
+            if rol not in {"admin", "administrador"}:
+                rol = "capturista"
+            else:
+                rol = "admin"
+
+            usuarios_por_id[user_id] = {
+                "id": user_id,
+                "nombre": f"{nombre} {apellido}".strip() or nombre or user_id,
+                "apellido": apellido,
+                "genero": genero,
+                "dia_nacimiento": "",
+                "mes_nacimiento": "",
+                "anio_nacimiento": "",
+                "fecha_nacimiento": "",
+                "rol": rol,
+            }
+
+    entrevistadores = list(usuarios_por_id.values())
     entrevistadores.sort(key=lambda x: ((x["nombre"] or "").lower(), x["id"]))
     return entrevistadores
 
@@ -166,7 +228,60 @@ def cargar_rutas_existentes() -> list[dict]:
     """
     Carga rutas disponibles desde caché de hoja Rutas.
     """
-    return cargar_datos_app().get("rutas", [])
+    rutas = cargar_datos_app().get("rutas", [])
+    if rutas:
+        return rutas
+
+    # Fallback: si la cache no trae rutas (p.ej. filtro de disponibilidad/encabezados distintos),
+    # leer Rutas directo y aceptar variaciones de columnas.
+    if not _secrets_disponibles():
+        return []
+
+    sh = _open_spreadsheet()
+    if sh is None:
+        return []
+
+    try:
+        rutas_raw = sh.worksheet("Rutas").get_all_records()
+    except Exception:
+        return []
+
+    rutas_ok: list[dict] = []
+    for row in rutas_raw:
+        rid = str(
+            row.get("ID_Ruta")
+            or row.get("id")
+            or row.get("Ruta_ID")
+            or ""
+        ).strip()
+        nombre = str(
+            row.get("Nombre_Ruta")
+            or row.get("Ruta")
+            or row.get("nombre")
+            or ""
+        ).strip()
+        if not rid:
+            continue
+
+        disp = str(row.get("Disponibilidad", "") or "").strip().lower()
+        if disp and disp not in {"x", "si", "sí", "1", "true", "activa", "activo"}:
+            continue
+
+        rutas_ok.append(
+            {
+                "id": rid,
+                "nombre": nombre or rid,
+                "link": str(
+                    row.get("GoogleMaps_Link")
+                    or row.get("Link")
+                    or row.get("Mapa")
+                    or ""
+                ).strip(),
+            }
+        )
+
+    rutas_ok.sort(key=lambda x: ((x["nombre"] or "").lower(), x["id"]))
+    return rutas_ok
 
 
 def inicializar_sesion() -> None:
@@ -272,6 +387,7 @@ def pagina_login() -> None:
     selected_entrevistador_mes_nac: Optional[str] = None
     selected_entrevistador_anio_nac: Optional[int] = None
     selected_entrevistador_fecha_nac: Optional[str] = None
+    selected_user_role: str = "capturista"
 
     if entrevistador_sel_nombre == _NUEVO_ENTREVISTADOR:
         st.info("Completa tu perfil para generar tu ID de entrevistador")
@@ -341,6 +457,7 @@ def pagina_login() -> None:
             selected_entrevistador_mes_nac = match.get("mes_nacimiento")
             selected_entrevistador_anio_nac = int(match["anio_nacimiento"]) if str(match.get("anio_nacimiento", "")).isdigit() else None
             selected_entrevistador_fecha_nac = match.get("fecha_nacimiento")
+            selected_user_role = str(match.get("rol", "capturista") or "capturista")
 
     # ── Ruta ─────────────────────────────────────────────────────────────────
     st.markdown("### Ruta")
@@ -445,7 +562,7 @@ def pagina_login() -> None:
         st.session_state.entrevistador_nombre = selected_entrevistador_nombre
         st.session_state.authenticated = True
         st.session_state.username = selected_entrevistador_nombre
-        st.session_state.user_role = "capturista"
+        st.session_state.user_role = selected_user_role
         st.session_state.apellido_entrevistador = selected_entrevistador_apellido
         st.session_state.genero_entrevistador = selected_entrevistador_genero
         st.session_state.dia_nacimiento_entrevistador = selected_entrevistador_dia_nac
