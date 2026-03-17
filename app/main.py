@@ -600,7 +600,7 @@ def pagina_login() -> None:
 
 
 def header_sesion() -> None:
-    """Mostrar header con info de sesion en todas las paginas."""
+    """Mostrar header con info de sesión en todas las páginas."""
     if st.session_state.logged_in:
         st.markdown(
             f"""

@@ -13,7 +13,6 @@ from utils.connectivity import is_online
 
 st.set_page_config(
     page_title="Dashboard Admin – El Caracol",
-    page_icon="📊",
     layout="wide",
     initial_sidebar_state="collapsed",
 )
@@ -24,7 +23,7 @@ if not st.session_state.get("authenticated"):
     st.stop()
 
 if st.session_state.get("user_role") != "admin":
-    st.error("⛔ Acceso restringido. Solo administradores pueden ver esta página.")
+    st.error("Acceso restringido. Solo administradores pueden ver esta página.")
     st.stop()
 
 st.markdown(
@@ -100,7 +99,7 @@ col_a, col_b = st.columns(2)
 with col_a:
     csv_data = df.to_csv(index=False).encode("utf-8")
     st.download_button(
-        label="⬇️ Descargar CSV",
+        label="Descargar CSV",
         data=csv_data,
         file_name="registros_el_caracol.csv",
         mime="text/csv",
@@ -115,7 +114,7 @@ with col_b:
         df.to_excel(excel_buf, index=False, engine="openpyxl")
         excel_buf.seek(0)
         st.download_button(
-            label="⬇️ Descargar Excel",
+            label="Descargar Excel",
             data=excel_buf.getvalue(),
             file_name="registros_el_caracol.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",

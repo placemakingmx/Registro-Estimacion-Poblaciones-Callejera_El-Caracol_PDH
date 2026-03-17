@@ -23,7 +23,7 @@ if not st.session_state.get("logged_in", False):
 def _header_seguro() -> None:
     """Intenta usar header_sesion desde Inicio y hace fallback local si falla."""
     try:
-        from app.main import header_sesion
+        from main import header_sesion
 
         header_sesion()
     except Exception:
