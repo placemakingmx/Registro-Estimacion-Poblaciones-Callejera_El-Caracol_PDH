@@ -86,24 +86,20 @@ def generar_id_entrevistador(
     return f"EC-{base}"
 
 
-def generar_id_evento(fecha_entrevista: str, id_ruta: str, entrevistas_existentes: list[dict]) -> str:
-    """Genera ID_Evento con formato DDMMAAAA-XXX-ID_Ruta."""
+def generar_id_evento(
+    fecha_entrevista: str,
+    id_ruta: str,
+    entrevistas_existentes: list[dict] | None = None,
+) -> str:
+    """Genera ID_Evento con formato DDMMAAAA-ID_Ruta."""
     if not fecha_entrevista:
         raise ValueError("La fecha de entrevista es obligatoria")
+    if not str(id_ruta).strip():
+        raise ValueError("El ID de ruta es obligatorio")
 
     dia, mes, anio = fecha_entrevista.split("/")
     fecha_str = f"{dia}{mes}{anio}"
-    patron = f"{fecha_str}-"
-
-    eventos_hoy_ruta = [
-        e for e in entrevistas_existentes
-        if str(e.get("ID_Evento", "")).startswith(patron)
-        and str(e.get("ID_Ruta", "")).strip() == str(id_ruta).strip()
-    ]
-
-    siguiente_num = len(eventos_hoy_ruta) + 1
-    num_str = str(siguiente_num).zfill(3)
-    return f"{fecha_str}-{num_str}-{id_ruta}"
+    return f"{fecha_str}-{str(id_ruta).strip()}"
 
 
 def generar_id_alfanumerico(prefijo: str = "", longitud: int = 7) -> str:
